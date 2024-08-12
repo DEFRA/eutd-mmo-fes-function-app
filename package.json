@@ -1,0 +1,36 @@
+{
+  "name": "defra-mmo-function",
+  "description": "Defra MMO Function to Replace CRON",
+  "scripts": {
+    "pretest": "rm -rf coverage/ || true",
+    "test": "jest mmo-cc-functionapp/ --coverage",
+    "test-vstack": "jest mmo-cc-functionapp/ --coverage"
+  },
+  "author": "Defra",
+  "dependencies": {
+    "applicationinsights": "^1.8.10",
+    "axios": "^0.21.4",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0"
+  },
+  "devDependencies": {
+    "husky": "^6.0.0",
+    "jest": "^25.0.0"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "cobertura"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 95,
+        "functions": 95,
+        "lines": 98,
+        "statements": 97
+      }
+    }
+  }
+}

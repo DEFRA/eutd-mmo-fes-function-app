@@ -1,0 +1,22 @@
+{
+  "version": "2.0",
+  "logging": {
+    "console": {
+      "isEnabled": "true"
+    },
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      },
+      "enableLiveMetrics": true,
+      "enableDependencyTracking": true,
+      "enablePerformanceCountersCollection": true
+    }
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[3.3.0, 4.0.0)"
+  },
+  "functions": [ "mmo-cc-functionapp" ]
+}

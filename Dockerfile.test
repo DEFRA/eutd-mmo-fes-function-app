@@ -1,0 +1,9 @@
+ARG GIT_HASH=""
+
+FROM node:12
+RUN echo $GIT_HASH > githash
+COPY --chown=root:root . /home/site/wwwroot
+
+WORKDIR /home/site/wwwroot
+
+RUN npm install

@@ -1,6 +1,6 @@
 # Introduction 
 
-We have a maintenance job in the `mmo-cc-reference-data-reader-svc` application which will find missing landings and produce reports for Case Management and Strategic Reporting.
+We have a maintenance job in the `mmo-fes-reference-data-reader` application which will find missing landings and produce reports for Case Management and Strategic Reporting.
 
 We need this job to run every 12 hours on production (1 hour on `SND`/`TST`).
 

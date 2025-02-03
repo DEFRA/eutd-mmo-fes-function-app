@@ -3,8 +3,8 @@
   "description": "Defra MMO Function to Replace CRON",
   "scripts": {
     "pretest": "rm -rf coverage/ || true",
-    "test": "jest mmo-cc-functionapp/ --coverage",
-    "test-vstack": "jest mmo-cc-functionapp/ --coverage"
+    "test": "jest mmo-fes-functionapp/ --coverage",
+    "test-vstack": "jest mmo-fes-functionapp/ --coverage"
   },
   "author": "Defra",
   "dependencies": {
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "husky": "^6.0.0",
-    "jest": "^25.0.0"
+    "jest": "^27.0.6"
   },
   "jest": {
     "coverageReporters": [

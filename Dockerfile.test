@@ -1,6 +1,6 @@
 ARG GIT_HASH=""
 
-FROM node:12
+FROM mcr.microsoft.com/azure-functions/node:4-node18
 RUN echo $GIT_HASH > githash
 COPY --chown=root:root . /home/site/wwwroot
 

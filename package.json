@@ -8,6 +8,7 @@
   "scripts": {
     "pretest": "rm -rf coverage/ || true",
     "test": "jest mmo-fes-functionapp/ --coverage",
+    "test:ci": "jest mmo-fes-functionapp/ --runInBand --watchAll=false --reporters=default --reporters=jest-junit --coverage --ci",
     "test-vstack": "jest mmo-fes-functionapp/ --coverage",
     "prepare": "husky"
   },
@@ -21,10 +22,20 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "jest": "^29.7.0",
+    "jest-junit": "16.0.0",
     "jest-cli": "^29.7.0"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^axios/": "axios/dist/node/axios.cjs"
+    },
     "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "tsx",
+      "ts",
+      "js",
+      "json"
+    ],
     "coverageReporters": [
       "json",
       "lcov",

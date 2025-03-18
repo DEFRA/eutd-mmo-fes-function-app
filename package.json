@@ -2,8 +2,8 @@
   "name": "defra-mmo-function",
   "description": "Defra MMO Function to Replace CRON",
   "engines": {
-    "node": "~18.12.1",
-    "npm": "~8.19.2"
+    "node": ">=22.0.0 <23.0.0",
+    "npm": "~10.9.2"
   },
   "scripts": {
     "pretest": "rm -rf coverage/ || true",

@@ -11,7 +11,7 @@ const init = (instrumentationKey, context) => {
 	appInsightsClient = appInsights.defaultClient;
 	logFn = context.log;
 
-	logFn(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][APP-INSIGHTS][INITIALISED]`)
+	logFn(`[SCHEDULED-JOBS][BC-RECONCILIATION][APP-INSIGHTS][INITIALISED]`)
 }
 
 const trackEvent = (name, properties) => {
@@ -24,7 +24,7 @@ const trackEvent = (name, properties) => {
 
 		appInsightsClient.trackEvent(data);
 		
-		logFn(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][APP-INSIGHTS][EVENT-TRACKED: ${JSON.stringify(data)}]`);
+		logFn(`[SCHEDULED-JOBS][BC-RECONCILIATION][APP-INSIGHTS][EVENT-TRACKED: ${JSON.stringify(data)}]`);
 	}
 }
 
@@ -41,7 +41,7 @@ const trackRequest = (name, url, response) => {
 
 		appInsightsClient.trackRequest(data);
 		
-		logFn(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][APP-INSIGHTS][REQUEST-TRACKED: ${JSON.stringify(data)}]`);
+		logFn(`[SCHEDULED-JOBS][BC-RECONCILIATION][APP-INSIGHTS][REQUEST-TRACKED: ${JSON.stringify(data)}]`);
 	}
 }
 

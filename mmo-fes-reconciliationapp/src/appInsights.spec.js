@@ -43,7 +43,7 @@ describe('appInsights', () => {
 		it('will log app insights have been initialised', () => {
 			SUT.init(instrumentationKey, context);
 
-			expect(mockLog).toHaveBeenCalledWith(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][APP-INSIGHTS][INITIALISED]`);
+			expect(mockLog).toHaveBeenCalledWith(`[SCHEDULED-JOBS][BC-RECONCILIATION][APP-INSIGHTS][INITIALISED]`);
 		});
 
 	});
@@ -82,7 +82,7 @@ describe('appInsights', () => {
 				tagOverrides: {'ai.operation.id': context.operationId}
 			};
 
-			expect(mockLog).toHaveBeenCalledWith(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][APP-INSIGHTS][EVENT-TRACKED: ${JSON.stringify(data)}]`);
+			expect(mockLog).toHaveBeenCalledWith(`[SCHEDULED-JOBS][BC-RECONCILIATION][APP-INSIGHTS][EVENT-TRACKED: ${JSON.stringify(data)}]`);
 		});
 
 	});
@@ -147,7 +147,7 @@ describe('appInsights', () => {
 				tagOverrides: {'ai.operation.id': context.operationId}
 			};
 
-			expect(mockLog).toHaveBeenCalledWith(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][APP-INSIGHTS][REQUEST-TRACKED: ${JSON.stringify(data)}]`);
+			expect(mockLog).toHaveBeenCalledWith(`[SCHEDULED-JOBS][BC-RECONCILIATION][APP-INSIGHTS][REQUEST-TRACKED: ${JSON.stringify(data)}]`);
 		});
 
 	});

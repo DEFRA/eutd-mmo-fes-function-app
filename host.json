@@ -18,5 +18,5 @@
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
     "version": "[3.3.0, 4.0.0)"
   },
-  "functions": [ "mmo-fes-functionapp" ]
+  "functions": [ "mmo-fes-functionapp", "mmo-fes-reconciliationapp" ]
 }

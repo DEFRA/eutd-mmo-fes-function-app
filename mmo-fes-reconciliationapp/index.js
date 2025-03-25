@@ -142,6 +142,9 @@ const func = async (context, myTimer, overrideConfig) => {
 		const apiName = config.apiName;
 		const batches = batchArray(documents, batchSize);
 
+		context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][BATCH-SIZE][${batchSize}]`, timeNow());
+		appInsights.trackEvent(`[SCHEDULED-JOBS][BC-RECONCILIATION][BATCH-SIZE][${batchSize}]`);
+
 		for (const batch of batches) {
 			const response = await makeApiCallWithRetry(
 				apiUrl,
@@ -172,6 +175,8 @@ const func = async (context, myTimer, overrideConfig) => {
 			status: 500,
 			body: `Error: ${error.message}`,
 		};
+
+		throw error;
 	} finally {
 		await client.close();
 	}

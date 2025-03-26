@@ -13,10 +13,10 @@ let httpsAgent = new https.Agent({ keepAlive: false });
 let config = {
 	dbName: process.env.DB_NAME || 'local_mmo_exportcert',
 	dbConnectionUri: process.env.DB_CONNECTION_URI || 'mongodb://127.0.0.1:27017',
-	batchSize: process.env.BATCH_CERTIFICATES_NUMBER || 10,
+	batchSize: process.env.BATCH_CERTIFICATES_NUMBER || 1000,
 	startDate: process.env.QUERY_START_DATE || '2025-01-09',
 	endDate: process.env.QUERY_END_DATE || '2025-02-13',
-	businessContinuityUrl: process.env.BUSINESS_CONTINUITY_URL || 'https://eutd-mmo-bc.dev.cdp-int.defra.cloud', // TODO: change to 'http://localhost:3000',
+	businessContinuityUrl: process.env.BUSINESS_CONTINUITY_URL || 'https://eutd-mmo-bc.dev.cdp-int.defra.cloud',
 	businessContinuityKey: process.env.BUSINESS_CONTINUITY_KEY || '00000000-0000-1000-A000-000000000000',
 	retries: process.env.NUMBER_OF_RETRIES || 4,
 	retryDelay: process.env.RETRY_DELAY_IN_MS || 1000,
@@ -112,10 +112,15 @@ const func = async (context, myTimer, overrideConfig) => {
 		const database = client.db(config.dbName);
 		const collection = database.collection("exportCertificates");
 
+		const startDate = new Date(config.startDate);
+		const endDate = new Date(config.endDate);
+		const nextDate = new Date(endDate);
+		nextDate.setDate(endDate.getDate() + 1);
+
 		const query = {
 			createdAt: {
-				$gte: new Date(config.startDate),
-				$lte: new Date(config.endDate)
+				$gte: startDate,
+				$lte: nextDate
 			},
 			status: { $in: [ "COMPLETE", "VOID" ] }
 		};

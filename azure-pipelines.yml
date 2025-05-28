@@ -5,6 +5,10 @@ parameters:
     displayName: "Deploy from Feature Branch"
     type: boolean
     default: false
+  - name: deployToSecondaryRegion
+    displayName: "Deploy to Secondary Region for DR"
+    type: boolean
+    default: false
 
 trigger:
   branches:
@@ -28,3 +32,4 @@ extends:
     npmAuthenticate: false
     isFunctionApp: true
     deployFromFeature: ${{ parameters.deployFromFeature }}
+    deployToSecondaryRegion: ${{ parameters.deployToSecondaryRegion }}

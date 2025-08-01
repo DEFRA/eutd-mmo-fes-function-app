@@ -15,7 +15,7 @@
   "author": "Defra",
   "dependencies": {
     "applicationinsights": "^2.9.6",
-    "axios": "^1.7.9",
+    "axios": "^1.11.0",
     "fs": "0.0.1-security",
     "https": "^1.0.0",
     "mongodb": "^6.13.0"

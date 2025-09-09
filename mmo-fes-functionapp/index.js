@@ -49,7 +49,7 @@ const retry = (fn, retries, delayFn) =>
 	fn(retries).catch(e =>
 		(retries > 0)
 			? wait(delayFn(retries)).then(() => retry(fn, retries - 1, delayFn))
-			: Promise.reject('failed')
+			: Promise.reject(new Error('failed'))
 	);
 
 /**

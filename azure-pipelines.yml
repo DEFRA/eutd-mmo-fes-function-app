@@ -17,17 +17,17 @@ parameters:
 trigger:
   branches:
     include:
-      - 'main'
-      - 'develop'
-      - 'hotfix/*'
-      - 'feature/*'
-      - 'epic/*'
+      - "main"
+      - "develop"
+      - "hotfix/*"
+      - "feature/*"
+      - "epic/*"
 pr:
   branches:
     include:
       - "main"
       - "develop"
-			
+
 resources:
   repositories:
     - repository: MMOPipelineCommon
@@ -39,7 +39,7 @@ resources:
 extends:
   template: /includes/app-deployment.yaml@MMOPipelineCommon
   parameters:
-    appName: 'mmo-fes-function-app'
+    appName: "mmo-fes-function-app"
     npmAuthenticate: false
     isFunctionApp: true
     deployFromFeature: ${{ parameters.deployFromFeature }}

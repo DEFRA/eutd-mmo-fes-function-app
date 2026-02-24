@@ -1,0 +1,82 @@
+appSettings:
+  - key: CRONTIME
+    value: '#{{ REF_DATA_READER_REFRESH_REPORT_JOB }}'
+    type: config
+  
+  - key: DATA_READER_URL
+    value: 'https://#{{ environment }}-#{{ repoName1 }}-#{{ nc-resource-webapp }}.azurewebsites.net/v1/jobs/landings'
+    type: config
+    stagingValue: 'https://#{{ environment }}-#{{ repoName1 }}-#{{ nc-resource-webapp }}-staging.azurewebsites.net/v1/jobs/landings'
+    slotSetting: true
+  
+  - key: FUNCTIONS_EXTENSION_VERSION
+    value: '~4'
+    type: config
+  
+  - key: FUNCTIONS_WORKER_RUNTIME
+    value: 'node'
+    type: config
+  
+  - key: NUMBER_OF_RETRIES
+    value: '4'
+    type: config
+  
+  - key: RETRY_DELAY_IN_MS
+    value: '300000'
+    type: config
+  
+  - key: TIMEOUT_IN_MS
+    value: '600000'
+    type: config
+  
+  - key: WEBSITE_HTTPLOGGING_RETENTION_DAYS
+    value: '5'
+    type: config
+  
+  - key: WEBSITE_NODE_DEFAULT_VERSION
+    value: '~18'
+    type: config
+  
+  - key: WEBSITE_RUN_FROM_PACKAGE
+    value: '1'
+    type: config
+  
+  - key: WEBSITE_TIME_ZONE
+    value: 'UTC'
+    type: config
+  
+  - key: BATCH_CERTIFICATES_NUMBER
+    value: '#{{ batchCertificatesNumber }}'
+    type: config
+  
+  - key: DB_NAME
+    value: 'mmo_exportcert'
+    type: config
+  
+  - key: DB_CONNECTION_URI
+    value: 'COSMOS-DB-RW-CONNECTION-URI'
+    type: secret
+  
+  - key: QUERY_START_DATE
+    value: '#{{ queryStartDate }}'
+    type: config
+  
+  - key: QUERY_END_DATE
+    value: '#{{ queryEndDate }}'
+    type: config
+  
+  - key: BUSINESS_CONTINUITY_URL
+    value: '#{{ businessContinuityUrl }}'
+    type: config
+  
+  - key: BUSINESS_CONTINUITY_KEY
+    value: '#{{ businessContinuityKey }}'
+    type: config
+  
+  - key: API_NAME
+    value: '/api/certificates'
+    type: config
+  
+  - key: WEBSITE_AUTH_AAD_ALLOWED_TENANTS
+    value: '#{{ aadAllowedTenants }}'
+    type: config

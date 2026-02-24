@@ -1,4 +1,24 @@
 appSettings:
+  - key: AAD_CLIENTSECRET
+    value: 'AAD-CLIENTSECRET'
+    type: secret
+
+  - key: API_NAME
+    value: '/api/certificates'
+    type: config
+
+  - key: BATCH_CERTIFICATES_NUMBER
+    value: '#{{ batchCertificatesNumber }}'
+    type: config
+   
+  - key: BUSINESS_CONTINUITY_KEY
+    value: '#{{ businessContinuityKey }}'
+    type: config
+
+  - key: BUSINESS_CONTINUITY_URL
+    value: '#{{ businessContinuityUrl }}'
+    type: config
+
   - key: CRONTIME
     value: '#{{ REF_DATA_READER_REFRESH_REPORT_JOB }}'
     type: config
@@ -9,6 +29,14 @@ appSettings:
     stagingValue: 'https://#{{ environment }}-#{{ repoName1 }}-#{{ nc-resource-webapp }}-staging.azurewebsites.net/v1/jobs/landings'
     slotSetting: true
   
+  - key: DB_CONNECTION_URI
+    value: 'COSMOS-DB-RW-CONNECTION-URI'
+    type: secret
+
+  - key: DB_NAME
+    value: 'mmo_exportcert'
+    type: config
+
   - key: FUNCTIONS_EXTENSION_VERSION
     value: '~4'
     type: config
@@ -20,15 +48,15 @@ appSettings:
   - key: NUMBER_OF_RETRIES
     value: '4'
     type: config
-  
-  - key: RETRY_DELAY_IN_MS
-    value: '300000'
+
+  - key: QUERY_END_DATE
+    value: '#{{ queryEndDate }}'
     type: config
-  
-  - key: TIMEOUT_IN_MS
-    value: '600000'
-    type: config
-  
+
+  - key: QUERY_START_DATE
+    value: '#{{ queryStartDate }}'
+    type: config 
+
   - key: WEBSITE_HTTPLOGGING_RETENTION_DAYS
     value: '5'
     type: config
@@ -45,38 +73,22 @@ appSettings:
     value: 'UTC'
     type: config
   
-  - key: BATCH_CERTIFICATES_NUMBER
-    value: '#{{ batchCertificatesNumber }}'
+  - key: RETRY_DELAY_IN_MS
+    value: '300000'
     type: config
   
-  - key: DB_NAME
-    value: 'mmo_exportcert'
-    type: config
-  
-  - key: DB_CONNECTION_URI
-    value: 'COSMOS-DB-RW-CONNECTION-URI'
-    type: secret
-  
-  - key: QUERY_START_DATE
-    value: '#{{ queryStartDate }}'
-    type: config
-  
-  - key: QUERY_END_DATE
-    value: '#{{ queryEndDate }}'
-    type: config
-  
-  - key: BUSINESS_CONTINUITY_URL
-    value: '#{{ businessContinuityUrl }}'
-    type: config
-  
-  - key: BUSINESS_CONTINUITY_KEY
-    value: '#{{ businessContinuityKey }}'
-    type: config
-  
-  - key: API_NAME
-    value: '/api/certificates'
-    type: config
-  
+  - key: TIMEOUT_IN_MS
+    value: '600000'
+    type: config  
+ 
   - key: WEBSITE_AUTH_AAD_ALLOWED_TENANTS
     value: '#{{ aadAllowedTenants }}'
+    type: config
+  
+  - key: WEBSITE_ENABLE_SYNC_UPDATE_SITE
+    value: 'true'
+    type: config
+ 
+  - key: WEBSITES_ENABLE_APP_SERVICE_STORAGE
+    value: 'false'
     type: config

@@ -1,5 +1,5 @@
 ---
-name: MMO FES Function Apps - Expert Developer Mode
+name: function-app-developer
 description: "Expert Azure Functions developer for MMO FES with full autonomy to implement timer/HTTP triggers, retry patterns, and comprehensive testing"
 tools:
   [

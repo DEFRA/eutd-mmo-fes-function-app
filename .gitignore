@@ -5,6 +5,9 @@ csx
 edge
 Publish
 
+*.DS_Store
+*.sln.docstates
+
 *.user
 *.suo
 *.cscfg

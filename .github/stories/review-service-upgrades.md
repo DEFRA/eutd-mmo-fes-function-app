@@ -1,19 +1,4 @@
-| Step                                                                                                                                                    | Result                                                                                                                                                                                              |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Branch                                                                                                                                                  | `feature/FI0-10851-sprint-182-review-service-to-identify-if-upgrades-are-required` ✅                                                                                                               |
-| ---                                                                                                                                                     | ---                                                                                                                                                                                                 |
-| [.nvmrc](vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html) | `24` --- verified, matches [package.json](vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html) engines ✅ |
-| Node version                                                                                                                                            | v24.13.1 ✅                                                                                                                                                                                         |
-| Baseline tests                                                                                                                                          | 26/26 pass ✅                                                                                                                                                                                       |
-| `npm audit fix`                                                                                                                                         | `axios` (high DoS) + `minimatch` (high ReDoS) patched ✅                                                                                                                                            |
-| `applicationinsights`                                                                                                                                   | 2.9.6 → 2.9.8 --- tests pass ✅                                                                                                                                                                     |
-| `mongodb`                                                                                                                                               | 6.14.2 → 6.21.0 --- tests pass ✅                                                                                                                                                                   |
-| `jest` / `jest-cli`                                                                                                                                     | 29.7.0 → 30.x --- **skipped** (major bump)                                                                                                                                                          |
-| Final audit                                                                                                                                             | `found 0 vulnerabilities` ✅                                                                                                                                                                        |
-| Commits                                                                                                                                                 | `chore(deps): apply non-breaking dependency upgrades FI0-10851` ✅                                                                                                                                  |
-| Reverts                                                                                                                                                 | None                                                                                                                                                                                                |
-
-## Branch is ready to push and raise a PR.
+---
 
 **Branch:** `feature/FI0-10851-sprint-182-review-service-to-identify-if-upgrades-are-required`
 
@@ -24,23 +9,23 @@ Created with `24` (from `package.json engines.node: ~24.13.1`).
 ### Audit: before → after
 
 | Severity | Before | After |
-| :------- | -----: | ----: |
-| Critical |      1 | **0** |
-| High     |     12 | **0** |
-| Moderate |      4 | **0** |
+| :-- | --: | --: |
+| Critical | 1 | **0** |
+| High | 12 | **0** |
+| Moderate | 4 | **0** |
 
 ### Upgrades applied (all tests + build pass)
 
-| Package                           | Change                                                           |
-| :-------------------------------- | :--------------------------------------------------------------- |
-| `react-router`                    | ^7.9.6 → 7.13.1                                                  |
-| `react-router-dom`                | ^7.9.6 → 7.13.1                                                  |
-| `@react-router/dev`               | ^7.9.6 → 7.13.1                                                  |
-| `@react-router/fs-routes`         | ^7.9.6 → 7.13.1                                                  |
-| `@react-router/node`              | ^7.9.6 → 7.13.1                                                  |
-| `@react-router/serve`             | ^7.9.6 → 7.13.1                                                  |
-| `overrides.@react-router/express` | added `7.13.1` (transitive, not a direct dep)                    |
-| `overrides.serialize-javascript`  | added `7.0.3` (transitive via `webpack → terser-webpack-plugin`) |
+| Package | Change |
+| :-- | :-- |
+| `react-router` | ^7.9.6 → 7.13.1 |
+| `react-router-dom` | ^7.9.6 → 7.13.1 |
+| `@react-router/dev` | ^7.9.6 → 7.13.1 |
+| `@react-router/fs-routes` | ^7.9.6 → 7.13.1 |
+| `@react-router/node` | ^7.9.6 → 7.13.1 |
+| `@react-router/serve` | ^7.9.6 → 7.13.1 |
+| `overrides.@react-router/express` | added `7.13.1` (transitive, not a direct dep) |
+| `overrides.serialize-javascript` | added `7.0.3` (transitive via `webpack → terser-webpack-plugin`) |
 
 ### Reverted
 
@@ -61,7 +46,7 @@ Full evidence in [report.md](report.md).
 ### 0) Prep
 
 1. **Capture work identifiers before branching**
-   - Ask for and confirm:
+   - Ask these questions and confirm the answers:
      - Ticket number (for example: `ABC-123`)
      - Sprint number (for example: `182`)
      - Short work summary slug (for example: `review-service-to-identify-if-upgrades-are-required`)

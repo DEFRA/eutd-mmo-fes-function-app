@@ -13,10 +13,6 @@ parameters:
     displayName: "Skip PRE1 Deployment"
     type: boolean
     default: false
-  - name: deployAppConfigOnly
-    displayName: "Deploy App Settings Only"
-    type: boolean
-    default: false 
     
 trigger:
   branches:
@@ -49,4 +45,3 @@ extends:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     deployToSecondaryRegion: ${{ parameters.deployToSecondaryRegion }}
     skipPRE1: ${{ parameters.skipPRE1 }}
-    deployAppConfigOnly: ${{ parameters.deployAppConfigOnly }}

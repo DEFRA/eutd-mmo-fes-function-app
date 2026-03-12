@@ -57,7 +57,7 @@ npm run test:ci       # CI mode with jest-junit reporter
 - Context structure: `{ log: jest.fn(), executionContext: { functionDirectory: __dirname }, traceContext: {}, operationId: '' }`
 
 **Coverage Requirements (enforced):**
-- Branches: 95%, Functions: 95%, Lines: 98%, Statements: 97%
+- Branches: 90%, Functions: 90%, Lines: 90%, Statements: 90%
 
 ## Project-Specific Conventions
 
@@ -146,3 +146,7 @@ FROM mcr.microsoft.com/azure-functions/node:4-node22
 ## Node Version Requirements
 - **Engine**: Node >=22.0.0 <23.0.0, npm ~10.9.2
 - Lock to Node 22 runtime in Dockerfile and local development
+
+## Skills
+
+Use `/develop` for implementation, coding, and research tasks. Use `/unit-tests` for writing tests, coverage, and SonarQube issues.

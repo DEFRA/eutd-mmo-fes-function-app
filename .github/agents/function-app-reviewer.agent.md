@@ -1,19 +1,7 @@
 ---
 name: function-app-reviewer
 description: "QA code reviewer for MMO FES Function App - read-only Azure Functions analysis with findings table output"
-tools:
-  [
-    "search/codebase",
-    "fetch",
-    "githubRepo",
-    "openSimpleBrowser",
-    "problems",
-    "search",
-    "search/searchResults",
-    "runCommands/terminalLastCommand",
-    "usages",
-    "vscodeAPI",
-  ]
+tools: [vscode, read, search, web, todo]
 ---
 
 # MMO FES Function Apps - QA Code Reviewer Mode

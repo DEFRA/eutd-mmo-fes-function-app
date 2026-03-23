@@ -83,12 +83,4 @@ appSettings:
  
   - key: WEBSITE_AUTH_AAD_ALLOWED_TENANTS
     value: '#{{ aadAllowedTenants }}'
-    type: config
-  
-  - key: WEBSITE_ENABLE_SYNC_UPDATE_SITE
-    value: 'true'
-    type: config
- 
-  - key: WEBSITES_ENABLE_APP_SERVICE_STORAGE
-    value: 'false'
-    type: config
+    type: config 

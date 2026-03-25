@@ -7,7 +7,7 @@ const requestInterceptor = (config) => {
 }
 
 const responseInterceptor = (response) => {
-	response.duration = parseInt(performance.now() - response.config.meta.ts);
+	response.duration = Number.parseInt(performance.now() - response.config.meta.ts);
 	return response;
 }
 

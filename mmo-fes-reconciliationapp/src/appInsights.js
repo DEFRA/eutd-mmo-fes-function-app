@@ -1,5 +1,7 @@
 const appInsights = require('applicationinsights');
 
+const HTTP_SUCCESS_STATUS = 200;
+
 let appInsightsClient;
 let operationIdOverride = {};
 let logFn = (str) => str;
@@ -35,7 +37,7 @@ const trackRequest = (name, url, response) => {
 			url: url,
 			duration: response.duration,
 			resultCode: response.status,
-			success: response.status === 200,
+			success: response.status === HTTP_SUCCESS_STATUS,
 			tagOverrides: operationIdOverride
 		};
 

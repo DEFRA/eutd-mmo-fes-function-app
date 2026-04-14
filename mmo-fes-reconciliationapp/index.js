@@ -1,10 +1,10 @@
 const axios = require("axios");
-const https = require('https');
+const https = require('node:https');
 const appInsights = require('./src/appInsights');
 const axiosInterceptors = require('./src/axiosInterceptors');
 const { MongoClient } = require("mongodb");
 
-let httpsAgent = new https.Agent({ keepAlive: false });
+const httpsAgent = new https.Agent({ keepAlive: false });
 
 /**
  * Config of the Azure function.
@@ -37,7 +37,7 @@ const timeNow = () =>
  * @returns 
  */
 async function makeApiCallWithRetry(url, apiName, key, data, maxRetries, retryDelay, context) {
-	const config = {
+	const c = {
 		headers: {
 			'X-API-KEY': key,
 			'accept': 'application/json'
@@ -50,7 +50,7 @@ async function makeApiCallWithRetry(url, apiName, key, data, maxRetries, retryDe
 	while (retryCount < maxRetries) {
 		try {
 			context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][MAKE-API-CALL][${url}${apiName}][RETRY: ${retryCount}]`);
-			const response = await axios.put(`${url}${apiName}`, data, config);
+			const response = await axios.put(`${url}${apiName}`, data, c);
 			
 			if (response.status !== status200) {
 				context.log.error(`[SCHEDULED-JOBS][BC-RECONCILIATION][MAKE-API-CALL][${response}]`);
@@ -67,6 +67,8 @@ async function makeApiCallWithRetry(url, apiName, key, data, maxRetries, retryDe
 			await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * retryDelay)); // Exponential backoff
 		}
 	}
+
+	throw new Error('Max retries exceeded');
 }
 
 const batchArray = (array, batchSize) => {
@@ -75,6 +77,61 @@ const batchArray = (array, batchSize) => {
     (_, index) => array.slice(index * batchSize, (index + 1) * batchSize)   
   );
 }
+
+const initializeFunctionExecution = (context, myTimer, overrideConfig) => {
+	context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][STARTED]`, timeNow());
+	appInsights.trackEvent('[SCHEDULED-JOBS][BC-RECONCILIATION][STARTED]');
+
+	config = { ...config, ...overrideConfig };
+
+	if (myTimer.IsPastDue) {
+		context.log('[SCHEDULED-JOBS][BC-RECONCILIATION][RUNNING-LATE]', timeNow());
+	}
+
+	if (config.instrumentationKey) {
+		appInsights.init(config.instrumentationKey, context);
+	}
+
+	axiosInterceptors.init(axios);
+};
+
+const getCertificateQuery = (startDate, endDate) => {
+	const nextDate = new Date(endDate);
+	nextDate.setDate(endDate.getDate() + 1);
+
+	return {
+		createdAt: {
+			$gte: startDate,
+			$lte: nextDate
+		},
+		status: { $in: ["COMPLETE", "VOID"] }
+	};
+};
+
+const getDocumentsForReconciliation = async (collection, query) => {
+	const documents = await collection.find(query).toArray();
+	return documents.map((document) => ({
+		certNumber: document.documentNumber,
+		status: document.status,
+		timestamp: document.status === "COMPLETE" ? document.createdAt : timeNow()
+	}));
+};
+
+const sendBatchesToBusinessContinuity = async (batches, apiConfig, context) => {
+	for (const batch of batches) {
+		const response = await makeApiCallWithRetry(
+			apiConfig.apiUrl,
+			apiConfig.apiName,
+			apiConfig.key,
+			batch,
+			apiConfig.retries,
+			apiConfig.delay,
+			context
+		);
+		context.log("Batch Data sent to BC", response.data);
+		appInsights.trackRequest("PUT " + apiConfig.apiName, apiConfig.apiUrl, response);
+	}
+};
 
 /**
  * The Azure Function which will use a timer in order to trigger the landings and reporting
@@ -85,18 +142,7 @@ const batchArray = (array, batchSize) => {
  * @param {Object} overrideConfig additional config
  */
 const func = async (context, myTimer, overrideConfig) => {
-	context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][STARTED]`, timeNow());
-	appInsights.trackEvent('[SCHEDULED-JOBS][BC-RECONCILIATION][STARTED]');
-
-	config = {...config, ...overrideConfig}
-
-	if (myTimer.IsPastDue)
-		context.log('[SCHEDULED-JOBS][BC-RECONCILIATION][RUNNING-LATE]', timeNow());
-
-	if (config.instrumentationKey)
-		appInsights.init(config.instrumentationKey, context);
-
-	axiosInterceptors.init(axios);
+	initializeFunctionExecution(context, myTimer, overrideConfig);
 
 	const uri = config.dbConnectionUri;
 	const client = new MongoClient(uri, {
@@ -114,27 +160,12 @@ const func = async (context, myTimer, overrideConfig) => {
 
 		const startDate = new Date(config.startDate);
 		const endDate = new Date(config.endDate);
-		const nextDate = new Date(endDate);
-		nextDate.setDate(endDate.getDate() + 1);
-
-		const query = {
-			createdAt: {
-				$gte: startDate,
-				$lte: nextDate
-			},
-			status: { $in: [ "COMPLETE", "VOID" ] }
-		};
+		const query = getCertificateQuery(startDate, endDate);
 
 		context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][DOCUMENT-QUERY][${JSON.stringify(query)}]`, timeNow());
 		appInsights.trackEvent(`[SCHEDULED-JOBS][BC-RECONCILIATION][DOCUMENT-QUERY][${JSON.stringify(query)}]`);
 
-		const documents = (await collection.find(query).toArray()).map((document) => {
-			return {
-				certNumber: document.documentNumber,
-				status: document.status,
-				timestamp: document.status === "COMPLETE" ? document.createdAt : timeNow()
-			}
-		});
+		const documents = await getDocumentsForReconciliation(collection, query);
 
 		context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][DOCUMENT-COUNT][${documents.length}]`, timeNow());
 		appInsights.trackEvent(`[SCHEDULED-JOBS][BC-RECONCILIATION][DOCUMENT-COUNT][${documents.length}]`);
@@ -150,19 +181,11 @@ const func = async (context, myTimer, overrideConfig) => {
 		context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][BATCH-SIZE][${batchSize}]`, timeNow());
 		appInsights.trackEvent(`[SCHEDULED-JOBS][BC-RECONCILIATION][BATCH-SIZE][${batchSize}]`);
 
-		for (const batch of batches) {
-			const response = await makeApiCallWithRetry(
-				apiUrl,
-				apiName,
-				key,
-				batch,
-				retries,
-				delay,
-				context
-			);
-			context.log("Batch Data sent to BC", response.data);
-			appInsights.trackRequest("PUT " + apiName, apiUrl, response);
-		}
+		await sendBatchesToBusinessContinuity(
+			batches,
+			{ apiUrl, apiName, key, retries, delay },
+			context
+		);
 
 		appInsights.trackEvent('[SCHEDULED-JOBS][BC-RECONCILIATION][SUCCEEDED]');
 

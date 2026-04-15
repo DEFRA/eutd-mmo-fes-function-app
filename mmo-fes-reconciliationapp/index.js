@@ -37,7 +37,7 @@ const timeNow = () =>
  * @returns 
  */
 async function makeApiCallWithRetry(url, apiName, key, data, maxRetries, retryDelay, context) {
-	const c = {
+	const _config = {
 		headers: {
 			'X-API-KEY': key,
 			'accept': 'application/json'
@@ -50,7 +50,7 @@ async function makeApiCallWithRetry(url, apiName, key, data, maxRetries, retryDe
 	while (retryCount < maxRetries) {
 		try {
 			context.log(`[SCHEDULED-JOBS][BC-RECONCILIATION][MAKE-API-CALL][${url}${apiName}][RETRY: ${retryCount}]`);
-			const response = await axios.put(`${url}${apiName}`, data, c);
+			const response = await axios.put(`${url}${apiName}`, data, _config);
 			
 			if (response.status !== status200) {
 				context.log.error(`[SCHEDULED-JOBS][BC-RECONCILIATION][MAKE-API-CALL][${response}]`);

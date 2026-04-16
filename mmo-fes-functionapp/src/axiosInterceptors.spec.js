@@ -1,6 +1,13 @@
-const { performance } = require('perf_hooks');
+
+const { performance } = require('node:perf_hooks');
 const axios = require('axios');
 const SUT = require('./axiosInterceptors');
+
+const INITIAL_PERFORMANCE_NOW = 1000;
+const SECOND_PERFORMANCE_NOW = 2500;
+const FINAL_PERFORMANCE_NOW = 3000;
+const SUCCESS_DURATION = 1500;
+const ERROR_DURATION = 2000;
 
 describe('axiosInterceptors', () => {
 
@@ -15,11 +22,11 @@ describe('axiosInterceptors', () => {
 			writable: true
 		});
 
-		jest
-			.spyOn(performance, 'now')
-			.mockReturnValueOnce(1000)
-			.mockReturnValueOnce(2500)
-			.mockReturnValueOnce(3000);
+		   jest
+			   .spyOn(performance, 'now')
+			   .mockReturnValueOnce(INITIAL_PERFORMANCE_NOW)
+			   .mockReturnValueOnce(SECOND_PERFORMANCE_NOW)
+			   .mockReturnValueOnce(FINAL_PERFORMANCE_NOW);
 		
 		SUT.init(axios);
 	
@@ -29,15 +36,15 @@ describe('axiosInterceptors', () => {
 	});
 
 	it('will add a timestamp to the request config', () => {
-		expect(config.meta.ts).toEqual(1000);
+		expect(config.meta.ts).toEqual(INITIAL_PERFORMANCE_NOW);
 	});
 
 	it('will add a duration to a success response', () => {
-		expect(response.duration).toEqual(1500);
+		expect(response.duration).toEqual(SUCCESS_DURATION);
 	});
 
 	it('will add a duration to a error response', () => {
-		expect(error.duration).toEqual(2000);
+		expect(error.duration).toEqual(ERROR_DURATION);
 	});
 
 });

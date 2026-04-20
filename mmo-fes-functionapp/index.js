@@ -1,8 +1,11 @@
 const axios = require("axios");
-const https = require('https');
-const fs = require('fs');
+const https = require('node:https');
+const fs = require('node:fs');
 const appInsights = require('./src/appInsights');
 const axiosInterceptors = require('./src/axiosInterceptors');
+
+const DEFAULT_TIMEOUT_MS = 600000; // 10 minutes
+const DEFAULT_RETRY_DELAY_MS = 300000; // 5 minutes
 
 let httpsAgent = new https.Agent({ keepAlive: false });
 
@@ -12,9 +15,9 @@ let httpsAgent = new https.Agent({ keepAlive: false });
  */
 let config = {
 	url: process.env.DATA_READER_URL || 'http://localhost:9000/v1/jobs/landings',
-	timeoutMS: process.env.TIMEOUT_IN_MS || 600000,
+	timeoutMS: process.env.TIMEOUT_IN_MS || DEFAULT_TIMEOUT_MS,
 	retries: process.env.NUMBER_OF_RETRIES || 4,
-	retryDelay: process.env.RETRY_DELAY_IN_MS || 300000,
+	retryDelay: process.env.RETRY_DELAY_IN_MS || DEFAULT_RETRY_DELAY_MS,
 	instrumentationKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY || null
 }
 
@@ -46,7 +49,7 @@ const wait = (time) =>
  * 										and ultimately stop retrying.
  */
 const retry = (fn, retries, delayFn) =>
-	fn(retries).catch(e =>
+	fn(retries).catch(_e =>
 		(retries > 0)
 			? wait(delayFn(retries)).then(() => retry(fn, retries - 1, delayFn))
 			: Promise.reject(new Error('failed'))
@@ -91,7 +94,7 @@ const httpReq = (log, totalRetries) => (retriesRemaining) => {
 		.catch((e) => {
 			log(`[SCHEDULED-JOBS][LANDING-AND-REPORTING][ERROR][ATTEMPT-${attempt}]`, timeNow(), e);
 			appInsights.trackRequest(apiName, apiUrl, e);
-			return Promise.reject(e);
+			throw e;
 		})
 };
 
@@ -108,11 +111,13 @@ const func = async (context, myTimer, overrideConfig) => {
 
 	config = {...config, ...overrideConfig}
 
-	if (myTimer.IsPastDue)
+	if (myTimer.IsPastDue) {
 		context.log('[SCHEDULED-JOBS][LANDING-AND-REPORTING][RUNNING-LATE]', timeNow());
+	}
 
-	if (config.instrumentationKey)
+	if (config.instrumentationKey) {
 		appInsights.init(config.instrumentationKey, context);
+	}
 
 	try {
 		const cacerts = [
@@ -133,12 +138,12 @@ const func = async (context, myTimer, overrideConfig) => {
 
 	axiosInterceptors.init(axios);
 
-	return await retry(httpReq(context.log, config.retries), config.retries, calcDelay(config.retryDelay, config.retries))
+	return retry(httpReq(context.log, config.retries), config.retries, calcDelay(config.retryDelay, config.retries))
 		.then(() => {
 			appInsights.trackEvent('[SCHEDULED-JOBS][LANDING-AND-REPORTING][SUCCEEDED]');
 			context.log('[SCHEDULED-JOBS][LANDING-AND-REPORTING][SUCCESS]', timeNow());
 		})
-		.catch(e => {
+		.catch(_e => {
 			appInsights.trackEvent('[SCHEDULED-JOBS][LANDING-AND-REPORTING][FAILED]');
 			context.log('[SCHEDULED-JOBS][LANDING-AND-REPORTING][ERROR][TERMINATING-RETRIES]', timeNow());
 		});  

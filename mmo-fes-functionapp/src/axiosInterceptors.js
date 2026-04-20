@@ -1,4 +1,4 @@
-const { performance } = require('perf_hooks');
+const { performance } = require('node:perf_hooks');
 
 const requestInterceptor = (config) => {
 	config.meta = config.meta || {};
@@ -7,7 +7,7 @@ const requestInterceptor = (config) => {
 }
 
 const responseInterceptor = (response) => {
-	response.duration = parseInt(performance.now() - response.config.meta.ts);
+	response.duration = Number.parseInt(performance.now() - response.config.meta.ts);
 	return response;
 }
 

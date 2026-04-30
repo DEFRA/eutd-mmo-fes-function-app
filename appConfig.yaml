@@ -65,6 +65,14 @@ appSettings:
     value: '~18'
     type: config
   
+  - key: WEBSITE_RUN_FROM_PACKAGE
+    value: '0'
+    type: config
+  
+  - key: WEBSITES_ENABLE_APP_SERVICE_STORAGE
+    value: 'false'
+    type: config
+  
   - key: WEBSITE_TIME_ZONE
     value: 'UTC'
     type: config

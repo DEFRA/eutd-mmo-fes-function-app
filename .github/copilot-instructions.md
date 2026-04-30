@@ -116,7 +116,7 @@ parameters:
 ### Docker Build
 Node 22 runtime on Azure Functions v4:
 ```dockerfile
-FROM mcr.microsoft.com/azure-functions/node:4-node22
+FROM mcr.microsoft.com/azure-functions/node:4-node24
 # Includes githash tracking via ARG GIT_HASH
 ```
 
@@ -144,7 +144,7 @@ FROM mcr.microsoft.com/azure-functions/node:4-node22
 - `BUSINESS_CONTINUITY_URL`, `BUSINESS_CONTINUITY_KEY`: BC API credentials
 
 ## Node Version Requirements
-- **Engine**: Node >=22.0.0 <23.0.0, npm ~10.9.2
+- **Engine**: Node >=24.0.0 <25.0.0, npm ~10.9.2
 - Lock to Node 22 runtime in Dockerfile and local development
 
 ## Skills

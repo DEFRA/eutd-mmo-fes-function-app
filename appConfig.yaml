@@ -61,10 +61,6 @@ appSettings:
     value: '5'
     type: config
   
-  - key: WEBSITE_NODE_DEFAULT_VERSION
-    value: '~18'
-    type: config
-  
   - key: WEBSITES_ENABLE_APP_SERVICE_STORAGE
     value: 'false'
     type: config

@@ -150,3 +150,49 @@ FROM mcr.microsoft.com/azure-functions/node:4-node24
 ## Skills
 
 Use `/develop` for implementation, coding, and research tasks. Use `/unit-tests` for writing tests, coverage, and SonarQube issues.
+
+## Defra standards and governance
+
+This service must comply with [Defra software development standards](https://github.com/DEFRA/software-development-standards) — the single source of truth. The rules below encode those standards; they do not replace them. When a standard changes, update this file.
+
+### Quality gates
+
+All code must pass these checks before merging:
+
+- All tests pass (`npm test`, or `npm run test:ci` in CI)
+- Coverage ≥90% (Branches/Functions/Lines/Statements) — no decrease from the SonarCloud baseline
+- SonarQube/SonarCloud quality gate passes; security hotspots reviewed and resolved
+- At least one approving review from another developer
+- No unresolved security vulnerabilities in dependencies
+
+### Security and PII
+
+- Follow [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)
+- Never commit secrets — load all configuration and credentials from environment/App Settings (or Key Vault), never a populated `local.settings.json` in source
+- **Never log PII**: names, addresses, emails, phone numbers, NI numbers, bank details, usernames, passwords, API keys, tokens — including in Application Insights telemetry and custom events
+- Validate and sanitise all external input, especially on HTTP-triggered functions; use parameterised queries for database access
+- Avoid `eval`, dynamic `Function()`, or executing user-supplied data; validate and normalise file paths
+
+### Logging
+
+- Structured logging with bracketed context tags and correlation propagated through Application Insights (operation/invocation ID)
+- Levels: `error` (failures), `warn` (handled but unexpected), `info` (business events), `debug` (development only)
+
+### Dependencies
+
+- New dependencies must be widely used, actively maintained, and compatible with the current Node.js LTS
+- Do not introduce a second HTTP client, database driver, or date library without an approved exception
+
+### How Copilot should respond
+
+- Follow conventions already in the codebase — check existing patterns first
+- Prefer modifying existing files over creating new ones when the change fits naturally
+- Provide minimal diffs touching only the necessary files; do not refactor unrelated code
+- Always include or update tests for changed behaviour, mocking MongoDB, HTTP/Axios, and timers
+- If a request conflicts with these instructions — a discouraged library, a skipped test, a hard-coded secret, or a broken quality gate — flag it explicitly and do not proceed silently
+
+### Licence
+
+All code is published under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) unless an approved exception exists.
+
+<!-- STANDARDS NOTE: These instructions reflect Defra software development standards (https://github.com/DEFRA/software-development-standards). Review this file periodically or after any Defra standards update. -->

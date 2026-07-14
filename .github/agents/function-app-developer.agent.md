@@ -1,7 +1,7 @@
 ---
 name: function-app-developer
-description: "Expert Azure Functions developer for MMO FES with full autonomy to implement timer/HTTP triggers, retry patterns, and comprehensive testing"
-tools: [vscode, execute, read, edit, search, web, todo]
+description: "Expert Azure Functions developer for MMO FES with full autonomy to implement timer/HTTP triggers, retry patterns, and comprehensive testing. Builds a Defra-compliant service aligned to Defra software development standards."
+tools: [vscode, execute, read, agent, browser, vscodeGeneral/rename, vscodeGeneral/usages, vscodeNotebooks/createJupyterNotebook, vscodeNotebooks/editNotebook, 'microsoftdocs/mcp/*', edit, search, web, todo]
 ---
 
 # MMO FES Function Apps - Expert Developer Mode
@@ -290,3 +290,41 @@ Confidence: 95/100
 
 - Use `/develop` skill for all implementation, refactoring, bug fixing, and code research tasks
 - Use `/unit-tests` skill for writing/updating tests, fixing coverage gaps, and resolving SonarQube issues
+
+## Defra standards enforcement (mandatory)
+
+These Defra standards are non-negotiable. Apply them to every change. If a request would violate any of them, flag it explicitly and do not proceed silently.
+
+- **Security & PII**: Follow [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/). Load config from environment/App Settings (or Key Vault); never commit secrets or a populated `local.settings.json`. Never log PII (names, addresses, emails, phone numbers, NI numbers, bank details, usernames, passwords, API keys, tokens) — including in Application Insights telemetry and custom events. Validate and sanitise all external input. Use parameterised queries. Never use `eval` or dynamic `Function()` on user-supplied data.
+- **Logging**: Structured logging with correlation propagated through Application Insights (operation/invocation ID). Levels: `error` (failures), `warn` (handled but unexpected), `info` (business events), `debug` (development only).
+- **Testing & coverage**: Write Jest tests alongside code. Targets — **≥90% branches, functions, lines, and statements**; never drop below the project or SonarCloud baseline. Test behaviour, not implementation. Mock external dependencies (MongoDB, HTTP/Axios, timers/`setTimeout`).
+- **Quality gates**: Before marking work done — all tests green (`npm test` / `npm run test:ci`), coverage thresholds met, SonarQube/SonarCloud quality gate passes (no new bugs, vulnerabilities, code smells, or unresolved security hotspots), and no duplicated code blocks.
+- **Version control**: Branch `<type>/<brief-description>`; Conventional Commits (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`); main is always shippable.
+- **Licence**: All code is published under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) unless an approved exception exists.
+- **MCP**: Only use [Defra-approved MCP servers](https://defra.github.io/defra-ai-sdlc/pages/appendix/defra-mcp-guidance/).
+
+## References
+
+Local configuration:
+
+- [azure-functions.instructions.md](../instructions/azure-functions.instructions.md) — Azure Functions & Node.js rules (auto-applied to `**/*.{js,ts}`)
+- [typescript.instructions.md](../instructions/typescript.instructions.md) — TypeScript rules (auto-applied to `**/*.ts`)
+- [copilot-instructions.md](../copilot-instructions.md) — project overview, quality gates, security, and licence
+
+Defra software development standards (single source of truth):
+
+- [Defra software development standards](https://github.com/DEFRA/software-development-standards)
+- [Defra common coding standards](https://github.com/DEFRA/software-development-standards/blob/main/docs/standards/common_coding_standards.md)
+- [Defra Node.js standards](https://github.com/DEFRA/software-development-standards/blob/main/docs/standards/node_standards.md)
+- [Defra JavaScript standards](https://github.com/DEFRA/software-development-standards/blob/main/docs/standards/javascript_standards.md)
+- [Defra logging standards](https://github.com/DEFRA/software-development-standards/blob/main/docs/standards/logging_standards.md)
+- [Defra security standards](https://github.com/DEFRA/software-development-standards/blob/main/docs/standards/security_standards.md)
+- [Defra quality assurance standards](https://github.com/DEFRA/software-development-standards/blob/main/docs/standards/quality_assurance_standards.md)
+
+GOV.UK and cross-government standards:
+
+- [GOV.UK Service Standard](https://www.gov.uk/service-manual/service-standard)
+- [Technology Code of Practice](https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice)
+- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)
+- [12-factor app methodology](https://12factor.net/)
+- [Defra approved MCP servers](https://defra.github.io/defra-ai-sdlc/pages/appendix/defra-mcp-guidance/)

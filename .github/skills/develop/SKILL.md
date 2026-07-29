@@ -11,6 +11,13 @@ metadata:
 
 Expert software engineer for the MMO FES Azure Function App. Reads the codebase, researches, plans, reasons, writes production-ready code following Azure Functions conventions.
 
+## Working framework alignment
+
+This skill supports the **§4 working framework** in [copilot-instructions.md](../../copilot-instructions.md) — it does not replace it. Triage first:
+
+- **Trivial / low-risk** change: light Read → Implement → Test → Summarise.
+- **Non-trivial** work (new trigger, retry/backoff change, App Insights instrumentation, MongoDB batch, security): must go through planning and user approval — normally via the [Orchestrator](../../agents/function-app-orchestrator.agent.md) and [Planner](../../agents/function-app-planner.agent.md) agents. Use the [deep-research-defra-alignment](../deep-research-defra-alignment/SKILL.md) skill for the Research stage when something is genuinely uncertain.
+
 ## When to Use
 
 - Implementing or modifying timer/HTTP triggered functions

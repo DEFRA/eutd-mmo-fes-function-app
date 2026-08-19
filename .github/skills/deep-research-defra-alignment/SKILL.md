@@ -1,6 +1,6 @@
 ---
 name: deep-research-defra-alignment
-description: "Do thorough, risk-scoped research in the open and align findings to the DEFRA standards precedence (DEFRA > GDS > community) for the MMO FES Function App. Use for the Research (§4.2) and Plan validation research (§4.5) stages of the working framework — validating Azure Functions APIs, retry patterns, App Insights instrumentation, security and policy against DEFRA/GDS and Azure guidance, and citing sources before a plan is approved or implemented."
+description: "Do thorough, risk-scoped research in the open and align findings to the DEFRA standards precedence (DEFRA > GDS > community) for the MMO FES Function App. Use for the single, risk-scoped Research (§4.2) stage of the working framework — validating Azure Functions APIs, retry patterns, App Insights instrumentation, security and policy against DEFRA/GDS and Azure guidance, and citing sources before a plan is approved or implemented."
 argument-hint: "e.g. 'validate the retry delay calculation the planner flagged' or 'research App Insights operation-id correlation in Azure Functions v4'"
 license: OGL-UK-3.0
 metadata:
@@ -12,18 +12,19 @@ user-invocable: false
 # Deep research & DEFRA alignment
 
 Turn an open question or a flagged plan step into a **sourced, DEFRA-aligned recommendation**. This is the
-**Research (§4.2)** and **Plan validation research (§4.5)** stages of the working framework in
+**single, risk-scoped Research (§4.2)** stage of the working framework in
 [copilot-instructions.md](../../copilot-instructions.md) — it does **not** replace or fork that framework,
-and it never authorises implementation (that still needs user **approval** at §4.6).
+and it never authorises implementation (that still needs user **approval** at §4.5). There is no separate
+plan-validation research round: the plan is checked against these same cited sources.
 
 **Division of labour:**
-- **Planner - Function App** flags which steps are risky or version-sensitive and performs the research.
-- **Developer - Function App** uses this skill for the Research stage (§4.2) when something is genuinely uncertain.
+- **Planner - Function App** runs this single research pass for **Complex** work and cites sources in its plan.
+- **Developer - Function App** runs this same single pass for **Standard** work (or when invoked without a
+  plan) as its own Research stage (§4.2).
 
 ## When to use
 
-- **Research (§4.2):** an unfamiliar Azure Functions API, retry pattern, App Insights SDK change, or DEFRA/GDS policy point.
-- **Plan validation (§4.5):** validating the steps the Planner flagged as risky before user approval.
+- **Research (§4.2), single pass:** an unfamiliar Azure Functions API, retry pattern, App Insights SDK change, or DEFRA/GDS policy point.
 
 **Do NOT use for trivial work.** Per §4 triage, a typo/comment/small localised change skips heavy research.
 

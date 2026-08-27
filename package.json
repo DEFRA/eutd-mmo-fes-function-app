@@ -14,11 +14,11 @@
 	},
 	"author": "Defra",
 	"dependencies": {
-		"applicationinsights": "^2.9.8",
+		"applicationinsights": "2.9.8",
 		"axios": "^1.12.2",
 		"fs": "0.0.1-security",
 		"https": "^1.0.0",
-		"mongodb": "^6.21.0"
+		"mongodb": "^7.5.0"
 	},
 	"devDependencies": {
 		"husky": "^9.1.7",
@@ -52,5 +52,8 @@
 				"statements": 97
 			}
 		}
+	},
+	"allowScripts": {
+		"fsevents@2.3.3": true
 	}
 }

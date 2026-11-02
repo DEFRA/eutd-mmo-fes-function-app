@@ -246,4 +246,34 @@ describe('func', () => {
 		expect(mockTrackRequest).toHaveBeenNthCalledWith(3, 'POST /v1/jobs/landings', url, 'success');
 	});
 
+	describe('when retries is 0', () => {
+		// func persists overrideConfig between calls, so restore the default retries
+		afterEach(async () => {
+			mockAxios.mockResolvedValue(null);
+			await func(ctx, timer, {retries: 4});
+		});
+
+		it('will make a single attempt without waiting and then give up', async () => {
+			mockAxios
+				.mockRejectedValue(networkError);
+
+			await func(ctx, timer, {retries: 0});
+
+			expect(mockAxios).toHaveBeenCalledTimes(1);
+			expect(mockSetTimeout).not.toHaveBeenCalled();
+			expect(mockTrackEvent).toHaveBeenCalledWith('[SCHEDULED-JOBS][LANDING-AND-REPORTING][FAILED]');
+			expect(ctx.log).toHaveBeenCalledWith('[SCHEDULED-JOBS][LANDING-AND-REPORTING][ERROR][TERMINATING-RETRIES]', dateNow);
+		});
+
+		it('will not retry when the single attempt succeeds', async () => {
+			mockAxios
+				.mockResolvedValue(null);
+
+			await func(ctx, timer, {retries: 0});
+
+			expect(mockAxios).toHaveBeenCalledTimes(1);
+			expect(mockTrackEvent).toHaveBeenCalledWith('[SCHEDULED-JOBS][LANDING-AND-REPORTING][SUCCEEDED]');
+		});
+	});
+
 });

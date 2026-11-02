@@ -48,12 +48,18 @@ const wait = (time) =>
  * @returns {Promise} the result of calling _fn_ if successful, or a rejected promise if we continue to fail
  * 										and ultimately stop retrying.
  */
-const retry = (fn, retries, delayFn) =>
-	fn(retries).catch(_e =>
-		(retries > 0)
-			? wait(delayFn(retries)).then(() => retry(fn, retries - 1, delayFn))
-			: Promise.reject(new Error('failed'))
-	);
+const retry = async (fn, retries, delayFn) => {
+	try {
+		return await fn(retries);
+	} catch (_e) {
+		if (retries <= 0) {
+			throw new Error('failed');
+		}
+
+		await wait(delayFn(retries));
+		return retry(fn, retries - 1, delayFn);
+	}
+};
 
 /**
  * Function which returns a function which will calculate the delay to wait between failed attempts,
